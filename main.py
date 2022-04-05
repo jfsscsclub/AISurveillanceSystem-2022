@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # Load the model
     model = load_model()
 
-    cap = cv2.VideoCapture("rtsp://aritro:rattlesnak@192.168.2.233/live")
+    cap = cv2.VideoCapture(0)
 
     while cap.isOpened():
         ret, frame = cap.read()
