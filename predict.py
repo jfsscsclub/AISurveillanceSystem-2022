@@ -6,7 +6,7 @@ from label_map import label_map
 
 def load_model():
     print("loading model...")
-    hub_model = hub.load("https://tfhub.dev/tensorflow/ssd_mobilenet_v2/2")
+    hub_model = hub.load("https://tfhub.dev/tensorflow/retinanet/resnet50_v1_fpn_640x640/1")
     print('model loaded!')
 
     return hub_model
@@ -54,6 +54,8 @@ def predict_image(img, model):
                 int(y_max * image_height)
             )
         })
+    
+    return objects
 
 def annotate_image(img, preds, color=(0, 255, 0)):
     img_annotated = np.copy(img)
@@ -62,7 +64,7 @@ def annotate_image(img, preds, color=(0, 255, 0)):
     for pred in preds:
         if pred["score"] > 0.5:
             score = round(pred['score'] * 100)
-            img_annotated = cv2.rectangle(img_annotated, pred['top_left_corner'], pred['bottom_right_corner'], color, weight=2)
+            img_annotated = cv2.rectangle(img_annotated, pred['top_left_corner'], pred['bottom_right_corner'], color, 2)
             cv2.putText(img_annotated, f"{pred['label']} {score}%", pred["top_left_corner"], cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
 
     return img_annotated
